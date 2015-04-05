@@ -7,7 +7,6 @@ import sqlite3 as sql
 # routes
 @app.route('/')
 def title_screen():
-    bands = get_bands()
     return render_template('layout.html')
 
 @app.route('/contribute')
@@ -30,7 +29,7 @@ def contribute_song():
 @app.route('/submit', methods=['POST'])
 def submit():
     insert_band(request.form['band'], request.form['start'], request.form['end'], request.form['genre'])
-    return render_template('confirm.html')
+    return render_template('confirm.html', band=request.form['band'])
 
 @app.before_request
 def db_connect():

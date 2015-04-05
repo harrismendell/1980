@@ -5,6 +5,10 @@ function contribute(value){
         debugger;
     }
 
+function confirm_insert_band(){
+    swal
+}
+
 
 //$("[rel='tooltip']").tooltip();
 
