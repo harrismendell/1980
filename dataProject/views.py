@@ -29,7 +29,7 @@ def contribute_song():
 @app.route('/submit', methods=['POST'])
 def submit():
     insert_band(request.form['band'], request.form['start'], request.form['end'], request.form['genre'])
-    return render_template('confirm.html', band=request.form['band'])
+    return render_template('confirm.html', object=request.form['band'])
 
 @app.before_request
 def db_connect():
