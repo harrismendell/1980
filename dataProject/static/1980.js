@@ -4,12 +4,3 @@ function contribute(value){
         window.location = url;
         debugger;
     }
-
-function confirm_insert_band(){
-    swal
-}
-
-
-//$("[rel='tooltip']").tooltip();
-
-

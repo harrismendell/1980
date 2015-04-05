@@ -1,11 +1,14 @@
-{% extends "layout.html" %}
+{% extends "contribute.html" %}
 
 {% block content %}
 
- <div class="container">
-    <div class="jumbotron">
-    <h1> You contributed {{ band }} to the database! <br><small>Thank you so much.</small></h1>
-    </div>
- </div>
+{# <div class="row">#}
+{#    <div class="col-md-12 text-center text-primary">#}
+{#    <h1> You contributed {{ band }} to the database! <br><small>Thank you so much.</small></h1>#}
+{#    </div>#}
+{# </div>#}
+<script type="text/javascript">
+    swal("You contributed " + "{{ band }}" + " to the database.", "Thank you so much.", "success");
+</script>
 
 {% endblock %}
