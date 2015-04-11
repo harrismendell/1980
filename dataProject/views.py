@@ -31,6 +31,8 @@ def submit():
     insert_band(request.form['band'], request.form['start'], request.form['end'], request.form['genre'])
     return render_template('confirm.html', object=request.form['band'])
 
+# Auth stuff
+
 @app.before_request
 def db_connect():
     g.db = pymysql.connect(host='stardock.cs.virginia.edu',
