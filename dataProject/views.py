@@ -33,7 +33,7 @@ def band_submit():
     if current_user.is_anonymous():
         return redirect('/login')  
     data = get_bands(request.form)
-    return render_template('explore_bands.html')
+    return render_template('explore_band_data.html',)
 
 # routes
 @app.route('/explore_songs')

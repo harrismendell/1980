@@ -59,10 +59,14 @@ def insert_band(band, start_year, end_year, genre):
 # Explore functions
 
 def get_bands(data):
-    start_year = data['start'] or 2050
-    end_year = data['end'] or 0 
+    start_year = data['start'] or 0
+    end_year = data['end'] or 2050
     genre = data['genre']
-    label = data['label']
+    if data['label'] != "":
+        label = '%' + data['label'] + '%'
+    else:
+        label = data['label']
+
     with g.db.cursor() as cursor:
         result = ''
         if label == "" and genre == "All":
@@ -77,6 +81,7 @@ def get_bands(data):
             import ipdb; ipdb.set_trace()
             cursor.execute('SELECT * from bands NATURAL JOIN label_released WHERE start_year >= %s and end_year <= %s and company_name LIKE %s', (start_year, end_year, label))
             result = cursor.fetchall()
+    return result
 
             
 
