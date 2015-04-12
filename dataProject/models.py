@@ -85,6 +85,11 @@ def get_records(band_name):
         cursor.execute('SELECT * from records NATURAL JOIN producer WHERE band_name=%s', (band_name))
         return cursor.fetchall()
 
+def get_songs(band_name):
+    with g.db.cursor() as cursor:
+        cursor.execute('SELECT * from bands NATURAL JOIN records NATURAL JOIN songs WHERE band_name=%s', (band_name))
+        return cursor.fetchall()
+
             
 
 

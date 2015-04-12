@@ -10,6 +10,7 @@
                 	<th>Start Year</th>
                 	<th>End Year</th>
                 	<th>Records</th>
+                	<th>Songs</th>
                 </tr>
                 </thead>
                 {% for band in data %}
@@ -20,6 +21,9 @@
                 	<td>{{band['genre']}}</td>
                 	<form method="POST" action="records/{{band['band_name']}}">
                 	<td><button type="submit" class="btn btn-default">Records</button></td>
+                	</form>
+                	<form method="POST" action="songs/{{band['band_name']}}">
+                	<td><button type="submit" class="btn btn-default">Songs</button></td>
                 	</form>
                 </tr>
                 {% endfor %}
