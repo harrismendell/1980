@@ -59,8 +59,6 @@ def explore_songs():
 def song_submit():
     if current_user.is_anonymous():
         return redirect('/login')  
-
-    import ipdb; ipdb.set_trace()
     return render_template('explore_songs.html')
 
 @app.route('/contribute')

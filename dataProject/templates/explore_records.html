@@ -6,22 +6,16 @@
             <table class="table">
                 <thead>
                 <tr>
-                    <th>Band</th>
-                    <th>Record</th>
+                    <th>Record Title</th>
                     <th>Release Date</th>
-                    <th>End Year</th>
-                    <th>Records</th>
+                    <th>Genre</th>
                 </tr>
                 </thead>
                 {% for record in records %}
                 <tr>
-                    <td>{{band['band_name']}}</td>
-                    <td>{{band['record_title']}}</td>
-                    <td>{{band['end_year']}}</td>
+                    <td>{{record['record_title']}}</td>
+                    <td>{{record['release_date']}}</td>
                     <td>{{data['genre']}}</td>
-                    <form method="POST" action="records/{{band['band_name']}}">
-                    <td><button type="submit" class="btn btn-default">Records</button></td>
-                    </form>
                 </tr>
                 {% endfor %}
             </table>

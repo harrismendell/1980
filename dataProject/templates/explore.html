@@ -3,23 +3,14 @@
 
  <div class="container">
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-sm-12">
             <div class="jumbotron text-center">
-            <h1> What do you want to explore?</h1>
-            <div class="form-group">
-              <label class="control-label col-sm-offset-2 col-sm-2" for="company"></label>
-              <div class="col-sm-6 col-md-4">
-                <div class="dropdown">
-                    <button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">Explore
-                    <span class="caret"></span></button>
-                    <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
-                      <li role="presentation"><a role="menuitem" tabindex="-1" href="explore_bands">Bands</a></li>
-                      <li role="presentation"><a role="menuitem" tabindex="-1" href="explore_songs">Songs</a></li>
-                    </ul>
-                  </div>
-              </div>
-            </div>
-            <br><br>
+            <h3> What do you want to explore?</h3>
+                <select class="form-control" name="explore" onchange="location = this.options[this.selectedIndex].value;">
+                     <option value="explore">Bands or songs?</option>
+                     <option value="explore_bands">Bands</option>
+                     <option value="explore_songs">Songs</option>
+                    </select>
             </div>
         </div>
      </div>
