@@ -1,0 +1,29 @@
+{% extends "explore.html" %}
+{% block content %}
+<div class="container">
+        <div class="jumbotron">
+            <table class="table">
+            	<thead>
+                <tr>
+                    <th>Song Title</th>
+                	<th>Band</th>
+                	<th>Record</th>
+                	<th>Date</th>
+                    <th>Genre</th>
+                	<th>Length</th>
+                </tr>
+                </thead>
+                {% for song in songs %}
+                <tr>
+                	<td>{{song['song_title']}}</td>
+                	<td>{{song['band_name']}}</td>
+                	<td>{{song['record_title']}}</td>
+                	<td>{{song['release_date']}}</td>
+                    <td>{{song['genre']}}</td>
+                    <td>{{song['length']}}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+{% endblock %}

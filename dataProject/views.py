@@ -2,7 +2,7 @@ from flask import render_template, g, request, redirect
 from flask.ext.login import login_user,  logout_user, current_user, login_required
 from dataProject import app
 import pymysql
-from models import insert_band, insert_user, User, get_bands, get_records, get_songs, find_specific_band
+from models import insert_band, insert_user, User, get_bands, get_records, get_songs, find_specific_band, get_more_songs
 
 
 # routes
@@ -53,8 +53,7 @@ def songs(band_name):
 
     data = find_specific_band(band_name)  
     songs = get_songs(band_name)
-    import ipdb; ipdb.set_trace()
-    return render_template('explore_songs.html', data=data, songs=songs)
+    return render_template('explore_song_data.html', data=data, songs=songs)
 
 # routes
 @app.route('/explore_songs')
@@ -68,7 +67,8 @@ def explore_songs():
 def song_submit():
     if current_user.is_anonymous():
         return redirect('/login')  
-    return render_template('explore_songs.html')
+    data = get_more_songs(request.form)
+    return render_template('explore_song_data.html', songs=data)
 
 @app.route('/contribute')
 def contribute():
@@ -79,19 +79,19 @@ def contribute():
 
 @app.route('/contribute_band')
 def contribute_band():
-    if current_user.is_anonymous or not current_user.is_admin:
+    if current_user.is_anonymous() or (current_user.is_admin == 0):
         return render_template('admin.html')   
     return render_template('contribute_band.html') 
 
 @app.route('/contribute_record')
 def contribute_record():
-    if current_user.is_anonymous or not current_user.is_admin:
+    if current_user.is_anonymous() or (current_user.is_admin == 0):
         return render_template('admin.html')   
     return render_template('contribute_record.html')
 
 @app.route('/contribute_song')
 def contribute_song():
-    if current_user.is_anonymous or not current_user.is_admin:
+    if current_user.is_anonymous() or (current_user.is_admin == 0):
         return render_template('admin.html')   
     return render_template('contribute_song.html')  
 

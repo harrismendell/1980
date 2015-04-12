@@ -7,20 +7,13 @@
     <div class="row">
         <div class="col-md-12">
             <div class="jumbotron text-center">
-            <h1> What do you want to contribute?</h1>
-            <div class="form-group">
-              <label class="control-label col-sm-offset-2 col-sm-2" for="company"></label>
-              <div class="col-sm-6 col-md-4">
-                <div class="dropdown">
-                    <button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">Contribute
-                    <span class="caret"></span></button>
-                    <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
-                      <li role="presentation"><a role="menuitem" tabindex="-1" href="contribute_band">Band</a></li>
-                      <li role="presentation"><a role="menuitem" tabindex="-1" href="contribute_record">Record</a></li>
-                      <li role="presentation"><a role="menuitem" tabindex="-1" href="contribute_song">Song</a></li>
-                    </ul>
-                  </div>
-              </div>
+            <h3> What do you want to contribute?</h3>
+                <select class="form-control" name="explore" onchange="location = this.options[this.selectedIndex].value;">
+                     <option value="/contribute">Pick one</option>
+                     <option value="/contribute_band">Bands</option>
+                     <option value="/contribute_record">Record</option>
+                     <option value="/contribute_song">Songs</option>
+                    </select>
             </div>
             <br><br>
             </div>

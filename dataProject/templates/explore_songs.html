@@ -5,17 +5,20 @@
         <div class="jumbotron">
           <h2>Explore songs! <small>All fields are optional</small></h2>
           <form method="POST" action="{{ url_for('song_submit') }}">
-            <table>
+            <table class="table">
                 <tr>
                     <td><label>Band Name</label><input type="text" name="band" placeholder="Devo"></td>
                 </tr>
                 <tr>
-                    <td><label>Start Year</label><input type="text" name="start" placeholder="1971"></td>
-                    <td><label>End Year</label><input type="text" name="end" placeholder="1991"></td>
+                    <td><label>Released After</label><input type="text" name="start" placeholder="1980"></td>
+                </tr>
+                <tr>
+                    <td><label>Released Before</label><input type="text" name="end" placeholder="1989"></td>
                 </tr>
                 <tr>
                     <td><label>Genre</label>
                         <select name="genre">
+                            <option value="All">All</option>
                             <option value="Rock">Rock</option>
                             <option value="Hip Hop">Hip Hop</option>
                             <option value="New Wave">New Wave</option>
