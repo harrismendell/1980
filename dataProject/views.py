@@ -2,8 +2,9 @@ from flask import render_template, g, request, redirect
 from flask.ext.login import login_user,  logout_user, current_user, login_required
 from dataProject import app
 import pymysql
-from models import insert_band, insert_user, User, get_bands
+from models import insert_band, insert_user, User, get_bands, get_records, find_specific_band
 import sqlite3 as sql
+
 
 # routes
 @app.route('/')
@@ -33,7 +34,18 @@ def band_submit():
     if current_user.is_anonymous():
         return redirect('/login')  
     data = get_bands(request.form)
-    return render_template('explore_band_data.html',)
+    import ipdb; ipdb.set_trace()
+    return render_template('explore_band_data.html', data=data)
+
+# routes
+@app.route('/records/<band_name>', methods=['post'])
+def records(band_name):
+    if current_user.is_anonymous():
+        return redirect('/login')
+
+    data = find_specific_band(band_name)  
+    records = get_records(band_name)
+    return render_template('records.html')
 
 # routes
 @app.route('/explore_songs')

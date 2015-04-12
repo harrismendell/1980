@@ -2,10 +2,27 @@
 {% block content %}
 <div class="container">
         <div class="jumbotron">
-            <table>
+            <table class="table">
+            	<thead>
                 <tr>
-                	<td>Start Year</td><td>End Year</td>
+                	<th>Band</th>
+                	<th>Genre</th>
+                	<th>Start Year</th>
+                	<th>End Year</th>
+                	<th>Records</th>
                 </tr>
+                </thead>
+                {% for band in data %}
+                <tr>
+                	<td>{{band['band_name']}}</td>
+                	<td>{{band['start_year']}}</td>
+                	<td>{{band['end_year']}}</td>
+                	<td>{{band['genre']}}</td>
+                	<form method="POST" action="records/{{band['band_name']}}">
+                	<td><button type="submit" class="btn btn-default">Records</button></td>
+                	</form>
+                </tr>
+                {% endfor %}
             </table>
         </div>
     </div>

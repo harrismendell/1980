@@ -5,6 +5,7 @@ from flask.ext.login import LoginManager, UserMixin, current_user, login_user
 from dataProject import login_manager
 
 
+
 class User(UserMixin):
 
     def __init__(self, id, name, password, is_admin=0, active=True):
@@ -62,26 +63,25 @@ def get_bands(data):
     start_year = data['start'] or 0
     end_year = data['end'] or 2050
     genre = data['genre']
-    if data['label'] != "":
-        label = '%' + data['label'] + '%'
-    else:
-        label = data['label']
 
     with g.db.cursor() as cursor:
         result = ''
-        if label == "" and genre == "All":
+        if genre == "All":
             cursor.execute('SELECT * from bands WHERE start_year >= %s and end_year <= %s', (start_year, end_year))
             result = cursor.fetchall()
 
-        elif label == "":
+        else:
             cursor.execute('SELECT * from bands WHERE start_year >= %s and end_year <= %s and genre=%s', (start_year, end_year, genre))
             result = cursor.fetchall()
-
-        elif genre == "All":
-            import ipdb; ipdb.set_trace()
-            cursor.execute('SELECT * from bands NATURAL JOIN label_released WHERE start_year >= %s and end_year <= %s and company_name LIKE %s', (start_year, end_year, label))
-            result = cursor.fetchall()
     return result
+
+def find_specific_band(band_name):
+    with g.db.cursor() as cursor:
+        cursor.execute('SELECT * from bands WHERE band_name=%s', (band_name))
+        return cursor.fetchone()
+
+def get_records(data):
+    pass
 
             
 

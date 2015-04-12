@@ -5,12 +5,14 @@
         <div class="jumbotron">
           <h2>Explore bands! <small>All fields are optional</small></h2>
           <form method="POST" action="{{ url_for('band_submit') }}">
-            <table>
+            <table class="table">
                 <tr>
-              <!--       <td><label>Band Name</label><input type="text" name="band" placeholder="Devo"></td> -->
+                    <td><label>Band Name</label><input type="text" name="band" placeholder="Devo"></td>
                 </tr>
                 <tr>
                     <td><label>Start Year</label><input type="text" name="start" placeholder="1971"></td>
+                </tr>
+                <tr>
                     <td><label>End Year</label><input type="text" name="end" placeholder="1991"></td>
                 </tr>
                 <tr>
@@ -25,7 +27,6 @@
                             <option value="Metal">Metal</option>
                         </select></td>
                 </tr>
-                <tr><td><label>Label</label><input type="text" name="label" placeholder="Warner"></td></tr>
             </table>
             <button type="submit" class="btn btn-default">Submit</button>
           </form>
