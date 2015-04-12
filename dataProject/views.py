@@ -1,35 +1,120 @@
-from flask import render_template, g, request
+from flask import render_template, g, request, redirect
+from flask.ext.login import login_user,  logout_user, current_user, login_required
 from dataProject import app
 import pymysql
-from models import get_bands, insert_band
+from models import insert_band, insert_user, User, get_bands
 import sqlite3 as sql
 
 # routes
 @app.route('/')
 def title_screen():
-    return render_template('layout.html')
+    if current_user.is_anonymous():
+        return redirect('/login')  
+    return render_template('explore.html')
+
+# routes
+@app.route('/exploredb', methods=['post'])
+def explore_db():
+    if current_user.is_anonymous():
+        return redirect('/login')
+      
+    return render_template('explore.html')
+
+# routes
+@app.route('/explore_bands')
+def explore_bands():
+    if current_user.is_anonymous():
+        return redirect('/login')  
+    return render_template('explore_bands.html')
+
+# routes
+@app.route('/band_submit', methods=['post'])
+def band_submit():
+    if current_user.is_anonymous():
+        return redirect('/login')  
+    data = get_bands(request.form)
+    return render_template('explore_bands.html')
+
+# routes
+@app.route('/explore_songs')
+def explore_songs():
+    if current_user.is_anonymous():
+        return redirect('/login')  
+    return render_template('explore_songs.html')
+
+# routes
+@app.route('/song_submit', methods=['post'])
+def song_submit():
+    if current_user.is_anonymous():
+        return redirect('/login')  
+
+    import ipdb; ipdb.set_trace()
+    return render_template('explore_songs.html')
 
 @app.route('/contribute')
 def contribute():
-    bands = get_bands()
+    if current_user.is_anonymous() or (current_user.is_admin == 0):
+        return render_template('admin.html')   
     return render_template('contribute.html')
+     
 
 @app.route('/contribute_band')
 def contribute_band():
-    return render_template('contribute_band.html')
+    if current_user.is_anonymous or not current_user.is_admin:
+        return render_template('admin.html')   
+    return render_template('contribute_band.html') 
 
 @app.route('/contribute_record')
 def contribute_record():
+    if current_user.is_anonymous or not current_user.is_admin:
+        return render_template('admin.html')   
     return render_template('contribute_record.html')
 
 @app.route('/contribute_song')
 def contribute_song():
-    return render_template('contribute_song.html')
+    if current_user.is_anonymous or not current_user.is_admin:
+        return render_template('admin.html')   
+    return render_template('contribute_song.html')  
 
 @app.route('/submit', methods=['POST'])
 def submit():
     insert_band(request.form['band'], request.form['start'], request.form['end'], request.form['genre'])
     return render_template('confirm.html', object=request.form['band'])
+
+@app.route('/signup')
+def signup():
+    return render_template('signup.html')
+
+
+@app.route('/signup/confirm', methods=['post'])
+def signup_confirm():
+    user = insert_user(request.form['username'], request.form['password'])
+    login_user(user)
+    return redirect('/')
+
+@app.route('/login')
+def login():
+    return render_template('login.html')
+
+
+@app.route('/login/check', methods=['post'])
+def login_check():
+    try:
+        user = User.get(request.form['username'])
+        if (user and user.password == request.form['password']):
+            login_user(user)
+        else:
+            return redirect('/login')
+    except KeyError:
+        return redirect('/login')
+
+    return redirect('/')
+
+
+@app.route('/logout')
+def logout():
+    logout_user()
+    return redirect('/')
 
 # Auth stuff
 

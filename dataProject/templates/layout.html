@@ -9,6 +9,7 @@
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/0.5.0/sweet-alert.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/0.5.0/sweet-alert.css">
+    <script type="text/javascript" src="/static/1980.js"> </script>
 
     {#<script type="text/javascript" src="http://twitter.github.com/bootstrap/assets/js/bootstrap-dropdown.js"></script>#}
     <!-- more css -->
@@ -23,9 +24,24 @@
         </div>
         <div class="container">
           <ul class="nav navbar-nav">
+            {% if current_user.is_active() %}
             <li class = "menuitem"><a href="/">Explore</a></li>
+            {% endif %}
+            {% if current_user.is_admin %}
             <li class = "menuitem"><a href="/contribute">Contribute</a></li>
+            {% endif %}
+            {% if current_user.is_active() and current_user.is_authenticated() %}
+            <li class = "menuitem"><a href="/logout">Log Out</a></li>
+            {% endif %}
           </ul>
+          <ul class="nav navbar-right">
+           {% if current_user.is_active() and current_user.is_authenticated() %}
+           <li class = "menuitem"><a>Welcome {{current_user.name}}</a></li>
+          {% endif %}
+          </ul>
+
+            
+        
         </div>
       </nav>
     {% block content %}
