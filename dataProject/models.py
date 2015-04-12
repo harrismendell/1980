@@ -80,8 +80,10 @@ def find_specific_band(band_name):
         cursor.execute('SELECT * from bands WHERE band_name=%s', (band_name))
         return cursor.fetchone()
 
-def get_records(data):
-    pass
+def get_records(band_name):
+    with g.db.cursor() as cursor:
+        cursor.execute('SELECT * from records WHERE band_name=%s', (band_name))
+        return cursor.fetchall()
 
             
 

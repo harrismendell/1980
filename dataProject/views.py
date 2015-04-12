@@ -34,7 +34,6 @@ def band_submit():
     if current_user.is_anonymous():
         return redirect('/login')  
     data = get_bands(request.form)
-    import ipdb; ipdb.set_trace()
     return render_template('explore_band_data.html', data=data)
 
 # routes
@@ -45,7 +44,8 @@ def records(band_name):
 
     data = find_specific_band(band_name)  
     records = get_records(band_name)
-    return render_template('records.html')
+    import ipdb; ipdb.set_trace()
+    return render_template('explore_records.html', data=data, records=records)
 
 # routes
 @app.route('/explore_songs')
