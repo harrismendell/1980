@@ -63,12 +63,22 @@ def get_bands(data):
     end_year = data['end'] or 0 
     genre = data['genre']
     label = data['label']
-    import ipdb; ipdb.set_trace()
+    with g.db.cursor() as cursor:
+        result = ''
+        if label == "" and genre == "All":
+            cursor.execute('SELECT * from bands WHERE start_year >= %s and end_year <= %s', (start_year, end_year))
+            result = cursor.fetchall()
 
-    if label is None:
-        with g.db.cursor() as cursor:
+        elif label == "":
             cursor.execute('SELECT * from bands WHERE start_year >= %s and end_year <= %s and genre=%s', (start_year, end_year, genre))
             result = cursor.fetchall()
+
+        elif genre == "All":
+            import ipdb; ipdb.set_trace()
+            cursor.execute('SELECT * from bands NATURAL JOIN label_released WHERE start_year >= %s and end_year <= %s and company_name LIKE %s', (start_year, end_year, label))
+            result = cursor.fetchall()
+
+            
 
 
 
