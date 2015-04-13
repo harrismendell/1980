@@ -105,7 +105,7 @@ def get_more_songs(data):
     with g.db.cursor() as cursor:
         result = ''
         if genre == "All":
-            cursor.execute('SELECT * from songs NATURAL JOIN records NATURAL JOIN songs WHERE release_date >= %s or release_date <= %s', (start_year, end_year))
+            cursor.execute('SELECT * from bands NATURAL JOIN records NATURAL JOIN songs WHERE release_date >= %s or release_date <= %s', (start_year, end_year))
             result = cursor.fetchall()
 
         else:

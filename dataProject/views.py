@@ -46,6 +46,15 @@ def records(band_name):
     return render_template('explore_records.html', data=data, records=records)
 
 # routes
+@app.route('/songs', methods=['post'])
+def explore_from_songs():
+    if current_user.is_anonymous():
+        return redirect('/login')
+    data = get_more_songs(request.form)
+    import ipdb; ipdb.set_trace()
+    return render_template('explore_song_data.html', songs=data)
+
+# routes
 @app.route('/songs/<band_name>', methods=['post'])
 def songs(band_name):
     if current_user.is_anonymous():
@@ -94,6 +103,12 @@ def contribute_song():
     if current_user.is_anonymous() or (current_user.is_admin == 0):
         return render_template('admin.html')   
     return render_template('contribute_song.html')  
+
+@app.route('/remove')
+def remove():
+    if current_user.is_anonymous() or (current_user.is_admin == 0):
+        return render_template('admin.html')   
+    return render_template('remove.html')  
 
 @app.route('/submit', methods=['POST'])
 def submit():
