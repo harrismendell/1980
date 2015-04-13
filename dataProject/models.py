@@ -119,9 +119,18 @@ def get_more_songs(data):
 
 
 def remove_song(song):
+    import ipdb; ipdb.set_trace()
     with g.db.cursor() as cursor:
-        cursor.execute('DELETE from song WHERE song_title=%s', song)
-        g.d.db.commit()
+        cursor.execute('DELETE from songwriter WHERE song_title=%s', song)
+        cursor.execute('DELETE from songs WHERE song_title=%s', song)
+        g.db.commit()
+
+def remove_band(band):
+    import ipdb; ipdb.set_trace()
+    with g.db.cursor() as cursor:
+        cursor.execute('DELETE w, e from songs NATURAL JOIN recods WHERE band_name=%s', band)
+        cursor.execute('DELETE from bands WHERE band_name=%s', band)
+        g.db.commit()
 
 
 

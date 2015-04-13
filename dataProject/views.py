@@ -2,7 +2,7 @@ from flask import render_template, g, request, redirect
 from flask.ext.login import login_user,  logout_user, current_user, login_required
 from dataProject import app
 import pymysql
-from models import insert_band, insert_user, User, get_bands, get_records, get_songs, find_specific_band, get_more_songs, insert_song
+from models import insert_band, insert_user, User, get_bands, get_records, get_songs, find_specific_band, get_more_songs, insert_song, remove_song, remove_band
 
 
 # routes
@@ -103,12 +103,19 @@ def contribute_song():
         return render_template('admin.html')   
     return render_template('contribute_song.html')  
 
-@app.route('/remove/<song>')
-def remove_song(song):
+@app.route('/remove/<song>', methods=['POST'])
+def remove_song_view(song):
     if current_user.is_anonymous() or (current_user.is_admin == 0):
         return render_template('admin.html')
     remove_song(song)   
     return render_template('confirm_delete.html', object=song) 
+
+@app.route('/remove_band/<band>', methods=['POST'])
+def remove_band_view(band):
+    if current_user.is_anonymous() or (current_user.is_admin == 0):
+        return render_template('admin.html')
+    remove_band(band)   
+    return render_template('confirm_delete.html', object=band) 
 
 @app.route('/submit', methods=['POST'])
 def submit():
