@@ -101,7 +101,6 @@ def get_more_songs(data):
     start_year = data['start'] or 0
     end_year = data['end'] or 2050
     genre = data['genre']
-    import ipdb; ipdb.set_trace()
 
     with g.db.cursor() as cursor:
         result = ''
