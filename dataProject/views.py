@@ -103,23 +103,12 @@ def contribute_song():
         return render_template('admin.html')   
     return render_template('contribute_song.html')  
 
-@app.route('/remove')
-def remove():
+@app.route('/remove/<song>')
+def remove_song(song):
     if current_user.is_anonymous() or (current_user.is_admin == 0):
-        return render_template('admin.html')   
-    return render_template('remove.html')  
-
-@app.route('/remove_bands')
-def remove_bands():
-    if current_user.is_anonymous() or (current_user.is_admin == 0):
-        return render_template('admin.html')   
-    return render_template('remove_bands.html')  
-
-@app.route('/remove_songs')
-def remove_songs():
-    if current_user.is_anonymous() or (current_user.is_admin == 0):
-        return render_template('admin.html')   
-    return render_template('remove_songs.html') 
+        return render_template('admin.html')
+    remove_song(song)   
+    return render_template('confirm_delete.html', object=song) 
 
 @app.route('/submit', methods=['POST'])
 def submit():

@@ -1,0 +1,14 @@
+{% extends "explore.html" %}
+
+{% block content %}
+
+<!-- <div class="row">
+	<div class="col-md-12 text-center text-primary">#}
+		<h1> You contributed {{ object }} to the database! <br><small>Thank you so much.</small></h1>#}
+	</div>
+</div> -->
+<script type="text/javascript">
+    swal("You deleted " + "{{ object }}" + " from the database.", "Coolio.", "success");
+</script>
+
+{% endblock %}

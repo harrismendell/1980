@@ -118,6 +118,12 @@ def get_more_songs(data):
     return result
 
 
+def remove_song(song):
+    with g.db.cursor() as cursor:
+        cursor.execute('DELETE from song WHERE song_title=%s', song)
+        g.d.db.commit()
+
+
 
 
 
