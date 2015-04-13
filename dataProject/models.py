@@ -128,7 +128,11 @@ def remove_song(song):
 def remove_band(band):
     import ipdb; ipdb.set_trace()
     with g.db.cursor() as cursor:
-        cursor.execute('DELETE w, e from songs NATURAL JOIN recods WHERE band_name=%s', band)
+        cursor.execute('DELETE x from bands w NATURAL JOIN records e NATURAL JOIN songs s NATURAL JOIN songwriter x WHERE band_name=%s', band)
+
+        cursor.execute('DELETE x from bands w NATURAL JOIN records e NATURAL JOIN label_released x WHERE band_name=%s', band)
+
+        cursor.execute('DELETE w, e from songs w NATURAL JOIN records e WHERE band_name=%s', band)
         cursor.execute('DELETE from bands WHERE band_name=%s', band)
         g.db.commit()
 
