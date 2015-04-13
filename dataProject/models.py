@@ -57,7 +57,6 @@ def insert_band(band, start_year, end_year, genre):
         g.db.commit()
 
 def insert_song(data):
-    import ipdb; ipdb.set_trace()
     length = '00:' + data['length']
     with g.db.cursor() as cursor:
         cursor.execute('INSERT INTO songs (song_title, record_title, length, release_date) VALUES (%s,%s,%s,%s)', (data['song'], data['record_title'], length, data['release']))
@@ -98,20 +97,28 @@ def get_songs(band_name):
         return cursor.fetchall()
 
 def get_more_songs(data):
+    band_name = data['band']
     start_year = data['start'] or 0
     end_year = data['end'] or 2050
     genre = data['genre']
+    import ipdb; ipdb.set_trace()
 
     with g.db.cursor() as cursor:
         result = ''
-        if genre == "All":
-            cursor.execute('SELECT * from bands NATURAL JOIN records NATURAL JOIN songs WHERE release_date >= %s or release_date <= %s', (start_year, end_year))
+        if band_name:
+            cursor.execute('SELECT * from bands NATURAL JOIN records NATURAL JOIN songs WHERE band_name = %s and (release_date >= %s or release_date <= %s)', ( band_name, start_year, end_year))
+            result = cursor.fetchall()
+
+        elif genre == "All":
+            cursor.execute('SELECT * from bands NATURAL JOIN records NATURAL JOIN songs WHERE release_date >= %s and release_date <= %s', (start_year, end_year))
             result = cursor.fetchall()
 
         else:
-            cursor.execute('SELECT * from bands NATURAL JOIN records NATURAL JOIN songs WHERE genre = %s AND (release_date >= %s OR release_date <= %s)', (genre, start_year, end_year))
+            cursor.execute('SELECT * from bands NATURAL JOIN records NATURAL JOIN songs WHERE genre = %s AND (release_date >= %s and release_date <= %s)', (genre, start_year, end_year))
             result = cursor.fetchall()
     return result
+
+
 
 
 

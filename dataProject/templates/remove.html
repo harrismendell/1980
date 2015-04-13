@@ -1,0 +1,19 @@
+{%  include "layout.html" %}
+<script src="../static/1980.js"></script>
+
+ <div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="jumbotron text-center">
+            <h3> What do you want to remove?</h3>
+                <select class="form-control" name="remove" onchange="location = this.options[this.selectedIndex].value;">
+                     <option value="/remove">Bands or songs?</option>
+                     <option value="/remove_bands">Bands</option>
+                     <option value="/remove_songs">Songs</option>
+                    </select>
+            </div>
+        </div>
+     </div>
+    {%  block content %}
+    {%  endblock %}
+ </div>

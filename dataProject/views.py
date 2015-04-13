@@ -51,7 +51,6 @@ def explore_from_songs():
     if current_user.is_anonymous():
         return redirect('/login')
     data = get_more_songs(request.form)
-    import ipdb; ipdb.set_trace()
     return render_template('explore_song_data.html', songs=data)
 
 # routes
@@ -109,6 +108,18 @@ def remove():
     if current_user.is_anonymous() or (current_user.is_admin == 0):
         return render_template('admin.html')   
     return render_template('remove.html')  
+
+@app.route('/remove_bands')
+def remove_bands():
+    if current_user.is_anonymous() or (current_user.is_admin == 0):
+        return render_template('admin.html')   
+    return render_template('remove_bands.html')  
+
+@app.route('/remove_songs')
+def remove_songs():
+    if current_user.is_anonymous() or (current_user.is_admin == 0):
+        return render_template('admin.html')   
+    return render_template('remove_songs.html') 
 
 @app.route('/submit', methods=['POST'])
 def submit():
