@@ -1,25 +1,32 @@
-{% extends "layout.html" %}
+{% extends "contribute.html" %}
 
 {% block content %}
 
     <div class="container">
         <div class="jumbotron">
           <h2>Contribute a band</h2>
-          <form role="form">
-            <div class="form-group">
-              <label for="email">Email:</label>
-              <input type="email" class="form-control" id="email" placeholder="Enter email">
-            </div>
-            <div class="form-group">
-              <label for="pwd">Password:</label>
-              <input type="password" class="form-control" id="pwd" placeholder="Enter password">
-            </div>
-            <div class="checkbox">
-              <label><input type="checkbox"> Remember me</label>
-            </div>
+          <form method="POST" name="contribute" action="{{ url_for('song_submit') }}" onsubmit="return validateForm2()">
+            <table class ="table">
+                <tr>
+                    <td><label>Song Name</label><input type="text" name="song" placeholder="Safety Dance"></td>
+                </tr>
+                <tr>
+                    <td><label>Band Name</label><input type="text" name="band" placeholder="Men Without Hats"></td>
+                </tr>
+                <tr>
+                    <td><label>Record Title</label><input type="text" name="record_title" placeholder="Rhythm of Youth"></td>
+                </tr>
+              
+                <tr>
+                    <td><label>Release Date</label><input type="text" name="release" placeholder="1982"></td>
+                </tr>
+                <tr>
+                    <td><label>Length</label><input type="text" name="length" placeholder="02:47"></td>
+                </tr>
+            </table>
             <button type="submit" class="btn btn-default">Submit</button>
           </form>
-        <div>
+        </div>
     </div>
 
 {% endblock %}

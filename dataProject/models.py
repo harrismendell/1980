@@ -56,6 +56,13 @@ def insert_band(band, start_year, end_year, genre):
         cursor.execute(sql)
         g.db.commit()
 
+def insert_song(data):
+    import ipdb; ipdb.set_trace()
+    length = '00:' + data['length']
+    with g.db.cursor() as cursor:
+        cursor.execute('INSERT INTO songs (song_title, record_title, length, release_date) VALUES (%s,%s,%s,%s)', (data['song'], data['record_title'], length, data['release']))
+        g.db.commit()
+
 
 # Explore functions
 
@@ -98,13 +105,15 @@ def get_more_songs(data):
     with g.db.cursor() as cursor:
         result = ''
         if genre == "All":
-            cursor.execute('SELECT * from bands NATURAL JOIN records NATURAL JOIN songs WHERE release_date >= %s or release_date <= %s', (start_year, end_year))
+            cursor.execute('SELECT * from songs NATURAL JOIN records NATURAL JOIN songs WHERE release_date >= %s or release_date <= %s', (start_year, end_year))
             result = cursor.fetchall()
 
         else:
             cursor.execute('SELECT * from bands NATURAL JOIN records NATURAL JOIN songs WHERE genre = %s AND (release_date >= %s OR release_date <= %s)', (genre, start_year, end_year))
             result = cursor.fetchall()
     return result
+
+
 
             
 

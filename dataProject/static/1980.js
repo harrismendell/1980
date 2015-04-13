@@ -41,4 +41,28 @@ function validateForm() {
     }
 }
 
+function validateForm2() {
+    var a = document.forms["contribute"]["song"].value;
+    var b = document.forms["contribute"]["band"].value;
+    var c = document.forms["contribute"]["record_title"].value;
+    var d = document.forms["contribute"]["release"].value;
+    var e = document.forms["contribute"]["length"].value;
+    debugger;
+    if (!a || !b || !c || !d || !e ){
+        alert("All fields must be filled")
+        return false
+    }
+}
+
+function validateForm3() {
+    var a = document.forms["contribute"]["band"].value;
+    var b = document.forms["contribute"]["start"].value;
+    var c = document.forms["contribute"]["end"].value;
+    debugger;
+    if (!a || !b || !c ){
+        alert("All fields must be filled")
+        return false
+    }
+}
+
 

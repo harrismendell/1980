@@ -2,7 +2,7 @@ from flask import render_template, g, request, redirect
 from flask.ext.login import login_user,  logout_user, current_user, login_required
 from dataProject import app
 import pymysql
-from models import insert_band, insert_user, User, get_bands, get_records, get_songs, find_specific_band, get_more_songs
+from models import insert_band, insert_user, User, get_bands, get_records, get_songs, find_specific_band, get_more_songs, insert_song
 
 
 # routes
@@ -66,9 +66,9 @@ def explore_songs():
 @app.route('/song_submit', methods=['post'])
 def song_submit():
     if current_user.is_anonymous():
-        return redirect('/login')  
-    data = get_more_songs(request.form)
-    return render_template('explore_song_data.html', songs=data)
+        return redirect('/login')
+    insert_song(request.form)
+    return render_template('confirm.html', object=request.form['song'])
 
 @app.route('/contribute')
 def contribute():
