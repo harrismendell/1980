@@ -85,7 +85,6 @@ def song_submit():
     if current_user.is_anonymous():
         return redirect('/login')
     msg = insert_song(request.form)
-    import ipdb; ipdb.set_trace()
     if msg == "good":
         return render_template('confirm.html', object=request.form['song'])
     elif msg == "invalid date":

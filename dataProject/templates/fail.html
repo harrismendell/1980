@@ -3,7 +3,8 @@
 {% block content %}
 
 <script type="text/javascript">
-    swal("Song was not contributed.", {{ msg }}, "error");
+{#    swal("Song was not contributed.", {{ msg }}, "error");#}
+swal("Song was not contributed.","{{ msg }}", "error");
 </script>
 
 {% endblock %}
