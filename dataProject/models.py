@@ -111,6 +111,9 @@ def get_more_songs(data):
     end_year = data['end'] or 2050
     genre = data['genre']
 
+    if check_for_sql_injection(band_name, start_year, end_year, genre):
+        return False
+
     with g.db.cursor() as cursor:
         result = ''
         if band_name:
@@ -142,3 +145,10 @@ def remove_band(band):
         cursor.execute('DELETE w, e from songs w NATURAL JOIN records e WHERE band_name=%s', band)
         cursor.execute('DELETE from bands WHERE band_name=%s', band)
         g.db.commit()
+
+def check_for_sql_injection(*args):
+    for arg in args:
+        if isinstance(arg, str):
+            if "\'" in arg:
+                return True
+    return False

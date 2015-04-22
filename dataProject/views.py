@@ -60,6 +60,8 @@ def explore_from_songs():
     if current_user.is_anonymous():
         return redirect('/login')
     data = get_more_songs(request.form)
+    if not data:
+        return render_template('sql_injection.html')
     return render_template('explore_song_data.html', songs=data)
 
 # routes
