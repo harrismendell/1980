@@ -22,7 +22,7 @@
                     <td>{{song['genre']}}</td>
                     <td>{{song['length']}}</td>
                     {% if current_user.is_admin %}
-                        <form method="POST" action="remove/{{song['song_title']}}">
+                        <form method="POST" action="/remove/{{song['song_title']}}">
                             <td><button type="submit" class="btn btn-default">Remove</button></td>
                         </form>
                     {% endif %}

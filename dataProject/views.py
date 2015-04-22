@@ -14,6 +14,7 @@ def title_screen():
         return redirect('/login')  
     return render_template('explore.html')
 
+
 @app.route('/export')
 def export():
     if current_user.is_anonymous():
@@ -51,7 +52,6 @@ def band_submit():
 # routes
 @app.route('/record_submit', methods=['post'])
 def record_submit():
-    import ipdb; ipdb.set_trace()
     if current_user.is_anonymous():
         return redirect('/login')
     try:
