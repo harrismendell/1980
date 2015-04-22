@@ -33,8 +33,11 @@ def explore_bands():
 @app.route('/band_submit', methods=['post'])
 def band_submit():
     if current_user.is_anonymous():
-        return redirect('/login')  
-    data = get_bands(request.form)
+        return redirect('/login')
+    try:
+        data = get_bands(request.form)
+    except IntegrityError:
+        return render_template('duplicate.html')
     if data == "si":
         return render_template('sql_injection.html')
     return render_template('explore_band_data.html', data=data)
@@ -44,7 +47,10 @@ def band_submit():
 def record_submit():
     if current_user.is_anonymous():
         return redirect('/login')
-    data = insert_record(request.form['band'], request.form['record_title'], request.form['release'])
+    try:
+        data = insert_record(request.form['band'], request.form['record_title'], request.form['release'])
+    except IntegrityError:
+        return render_template('duplicate.html')
     if data == "si":
         return render_template('sql_injection.html')
     return render_template('confirm.html', object=request.form['record_title'])
@@ -91,7 +97,10 @@ def explore_songs():
 def song_submit():
     if current_user.is_anonymous():
         return redirect('/login')
-    msg = insert_song(request.form)
+    try:
+        msg = insert_song(request.form)
+    except IntegrityError:
+        return render_template('duplicate.html')
     if msg == "good":
         return render_template('confirm.html', object=request.form['song'])
     if msg == "si":
