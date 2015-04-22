@@ -2,7 +2,8 @@ from flask import render_template, g, request, redirect
 from flask.ext.login import login_user,  logout_user, current_user, login_required
 from dataProject import app
 import pymysql
-from models import insert_band, insert_user, User, get_bands, get_records, get_songs, find_specific_band, get_more_songs, insert_song, remove_song, remove_band
+from models import insert_band, insert_user, User, get_bands, get_records, \
+    get_songs, find_specific_band, get_more_songs, insert_song, remove_song, remove_band, insert_record
 
 
 # routes
@@ -34,6 +35,14 @@ def band_submit():
         return redirect('/login')  
     data = get_bands(request.form)
     return render_template('explore_band_data.html', data=data)
+
+# routes
+@app.route('/record_submit', methods=['post'])
+def record_submit():
+    if current_user.is_anonymous():
+        return redirect('/login')
+    insert_record(request.form['band'], request.form['record_title'], request.form['release'])
+    return render_template('confirm.html', object=request.form['record_title'])
 
 # routes
 @app.route('/records/<band_name>', methods=['post'])
@@ -75,8 +84,13 @@ def explore_songs():
 def song_submit():
     if current_user.is_anonymous():
         return redirect('/login')
-    insert_song(request.form)
-    return render_template('confirm.html', object=request.form['song'])
+    msg = insert_song(request.form)
+    import ipdb; ipdb.set_trace()
+    if msg == "good":
+        return render_template('confirm.html', object=request.form['song'])
+    elif msg == "invalid date":
+        return render_template('fail.html', msg="Please enter a song with a release date between 1980 and 1989")
+
 
 @app.route('/contribute')
 def contribute():
@@ -158,7 +172,6 @@ def logout():
     return redirect('/')
 
 # Auth stuff
-
 @app.before_request
 def db_connect():
     g.db = pymysql.connect(host='stardock.cs.virginia.edu',

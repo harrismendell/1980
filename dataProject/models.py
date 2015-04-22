@@ -3,11 +3,10 @@ import pymysql
 from flask import Flask, flash, redirect, url_for, request, get_flashed_messages, g
 from flask.ext.login import LoginManager, UserMixin, current_user, login_user
 from dataProject import login_manager
-
+from pymysql import InternalError
 
 
 class User(UserMixin):
-
     def __init__(self, id, name, password, is_admin=0, active=True):
         self.id = name
         self.name = name
@@ -56,11 +55,21 @@ def insert_band(band, start_year, end_year, genre):
         cursor.execute(sql)
         g.db.commit()
 
+def insert_record(band_name, record_title, release):
+    with g.db.cursor() as cursor:
+        cursor.execute('INSERT INTO records (record_title, release_date, band_name) VALUES (%s, %s, %s)', (record_title, release, band_name))
+        g.db.commit()
+
 def insert_song(data):
     length = '00:' + data['length']
     with g.db.cursor() as cursor:
-        cursor.execute('INSERT INTO songs (song_title, record_title, length, release_date) VALUES (%s,%s,%s,%s)', (data['song'], data['record_title'], length, data['release']))
+        try:
+            cursor.execute('INSERT INTO songs (song_title, record_title, length, release_date) VALUES (%s,%s,%s,%s)', (data['song'], data['record_title'], length, data['release']))
+        except InternalError:
+            return "invalid date"
+
         g.db.commit()
+        return "good"
 
 
 # Explore functions
@@ -105,7 +114,7 @@ def get_more_songs(data):
     with g.db.cursor() as cursor:
         result = ''
         if band_name:
-            cursor.execute('SELECT * from bands NATURAL JOIN records NATURAL JOIN songs WHERE band_name = %s and (release_date >= %s or release_date <= %s)', ( band_name, start_year, end_year))
+            cursor.execute('SELECT * from bands NATURAL JOIN records NATURAL JOIN songs WHERE band_name = %s and (release_date >= %s and release_date <= %s)', ( band_name, start_year, end_year))
             result = cursor.fetchall()
 
         elif genre == "All":
@@ -119,14 +128,12 @@ def get_more_songs(data):
 
 
 def remove_song(song):
-    import ipdb; ipdb.set_trace()
     with g.db.cursor() as cursor:
         cursor.execute('DELETE from songwriter WHERE song_title=%s', song)
         cursor.execute('DELETE from songs WHERE song_title=%s', song)
         g.db.commit()
 
 def remove_band(band):
-    import ipdb; ipdb.set_trace()
     with g.db.cursor() as cursor:
         cursor.execute('DELETE x from bands w NATURAL JOIN records e NATURAL JOIN songs s NATURAL JOIN songwriter x WHERE band_name=%s', band)
 
@@ -135,19 +142,3 @@ def remove_band(band):
         cursor.execute('DELETE w, e from songs w NATURAL JOIN records e WHERE band_name=%s', band)
         cursor.execute('DELETE from bands WHERE band_name=%s', band)
         g.db.commit()
-
-
-
-
-
-            
-
-
-
-
-
-
-
-
-
-
