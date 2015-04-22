@@ -4,6 +4,7 @@ from dataProject import app
 import pymysql
 from models import insert_band, insert_user, User, get_bands, get_records, \
     get_songs, find_specific_band, get_more_songs, insert_song, remove_song, remove_band, insert_record
+from pymysql import InternalError, IntegrityError
 
 
 # routes
@@ -34,6 +35,8 @@ def band_submit():
     if current_user.is_anonymous():
         return redirect('/login')  
     data = get_bands(request.form)
+    if data == "si":
+        return render_template('sql_injection.html')
     return render_template('explore_band_data.html', data=data)
 
 # routes
@@ -41,7 +44,9 @@ def band_submit():
 def record_submit():
     if current_user.is_anonymous():
         return redirect('/login')
-    insert_record(request.form['band'], request.form['record_title'], request.form['release'])
+    data = insert_record(request.form['band'], request.form['record_title'], request.form['release'])
+    if data == "si":
+        return render_template('sql_injection.html')
     return render_template('confirm.html', object=request.form['record_title'])
 
 # routes
@@ -60,7 +65,7 @@ def explore_from_songs():
     if current_user.is_anonymous():
         return redirect('/login')
     data = get_more_songs(request.form)
-    if not data:
+    if data == "si":
         return render_template('sql_injection.html')
     return render_template('explore_song_data.html', songs=data)
 
@@ -89,6 +94,8 @@ def song_submit():
     msg = insert_song(request.form)
     if msg == "good":
         return render_template('confirm.html', object=request.form['song'])
+    if msg == "si":
+        return render_template('sql_injection.html')
     elif msg == "invalid date":
         return render_template('fail.html', msg="Please enter a song with a release date between 1980 and 1989")
 

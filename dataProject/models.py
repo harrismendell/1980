@@ -3,7 +3,7 @@ import pymysql
 from flask import Flask, flash, redirect, url_for, request, get_flashed_messages, g
 from flask.ext.login import LoginManager, UserMixin, current_user, login_user
 from dataProject import login_manager
-from pymysql import InternalError
+from pymysql import InternalError, IntegrityError
 
 
 class User(UserMixin):
@@ -40,6 +40,9 @@ def load_user(username):
 
 
 def insert_user(username, password):
+    if check_for_sql_injection(username, password):
+        return "si"
+
     with g.db.cursor() as cursor:
         cursor.execute("INSERT INTO user (username, password) VALUES (%s,%s)", (username, password))
         g.db.commit()
@@ -48,20 +51,31 @@ def insert_user(username, password):
 
 
 def insert_band(band, start_year, end_year, genre):
+    if check_for_sql_injection(band, start_year, end_year, genre):
+        return "si"
+
     # Connect to the database
     with g.db.cursor() as cursor:
         values = '\'' + band + '\' , \'' + start_year + '\' , \'' + end_year + '\' , \'' + genre + '\''
         sql = 'INSERT INTO bands (band_name, start_year, end_year, genre) VALUES (' + values + ')'
         cursor.execute(sql)
         g.db.commit()
+    return "si"
 
 def insert_record(band_name, record_title, release):
+    if check_for_sql_injection(band_name, record_title, release):
+        return "si"
+
     with g.db.cursor() as cursor:
         cursor.execute('INSERT INTO records (record_title, release_date, band_name) VALUES (%s, %s, %s)', (record_title, release, band_name))
         g.db.commit()
+    return ''
 
 def insert_song(data):
     length = '00:' + data['length']
+    if check_for_sql_injection(data['song'], data['record_title'], length, data['release']):
+        return "si"
+
     with g.db.cursor() as cursor:
         try:
             cursor.execute('INSERT INTO songs (song_title, record_title, length, release_date) VALUES (%s,%s,%s,%s)', (data['song'], data['record_title'], length, data['release']))
@@ -78,6 +92,9 @@ def get_bands(data):
     start_year = data['start'] or 0
     end_year = data['end'] or 2050
     genre = data['genre']
+
+    if check_for_sql_injection(start_year, end_year, genre):
+        return "si"
 
     with g.db.cursor() as cursor:
         result = ''
@@ -112,7 +129,7 @@ def get_more_songs(data):
     genre = data['genre']
 
     if check_for_sql_injection(band_name, start_year, end_year, genre):
-        return False
+        return "si"
 
     with g.db.cursor() as cursor:
         result = ''
@@ -148,7 +165,7 @@ def remove_band(band):
 
 def check_for_sql_injection(*args):
     for arg in args:
-        if isinstance(arg, str):
+        if not isinstance(arg, int):
             if "\'" in arg:
                 return True
     return False
