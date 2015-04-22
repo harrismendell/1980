@@ -120,7 +120,7 @@ def find_specific_band(band_name):
 
 def get_records(band_name):
     with g.db.cursor() as cursor:
-        cursor.execute('SELECT * from records NATURAL JOIN producer WHERE band_name=%s', (band_name))
+        cursor.execute('SELECT * from records WHERE band_name=%s', (band_name))
         return cursor.fetchall()
 
 def get_songs(band_name):
@@ -178,7 +178,4 @@ def check_for_sql_injection(*args):
 
 def export_db():
     os.system("mysqldump --host=stardock.cs.virginia.edu --user=cs4750hbm2qc --password=cs47501980 cs4750hbm2qc > database.sql")
-    f = open('database.sql')
-    stuff = f.read()
-    webbrowser.open("/Users/sunnyharris/1980_new/1980/database.sql")
-    import ipdb; ipdb.set_trace()
+    webbrowser.open("file:///Users/sunnyharris/1980_new/1980/database.sql")

@@ -9,8 +9,6 @@
                     <th>Record Title</th>
                     <th>Date</th>
                     <th>Genre</th>
-                    <th>Label</th>
-                    <th>Producer</th>
                 </tr>
                 </thead>
                 {% for record in records %}
@@ -18,8 +16,6 @@
                     <td>{{record['record_title']}}</td>
                     <td>{{record['release_date']}}</td>
                     <td>{{data['genre']}}</td>
-                    <td>{{record['company_name']}}</td>
-                    <td>{{record['producer_name']}}</td>
                 </tr>
                 {% endfor %}
             </table>

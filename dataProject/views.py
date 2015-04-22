@@ -19,7 +19,7 @@ def export():
     if current_user.is_anonymous():
         return redirect('/login')
     export_db()
-    return send_from_directory('1980', 'database.sql')
+    return render_template('confirm_export.html')
 
 # routes
 @app.route('/exploredb', methods=['post'])
@@ -51,6 +51,7 @@ def band_submit():
 # routes
 @app.route('/record_submit', methods=['post'])
 def record_submit():
+    import ipdb; ipdb.set_trace()
     if current_user.is_anonymous():
         return redirect('/login')
     try:
