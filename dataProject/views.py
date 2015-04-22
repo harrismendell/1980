@@ -1,9 +1,9 @@
-from flask import render_template, g, request, redirect
+from flask import render_template, g, request, redirect, url_for, send_from_directory
 from flask.ext.login import login_user,  logout_user, current_user, login_required
 from dataProject import app
 import pymysql
 from models import insert_band, insert_user, User, get_bands, get_records, \
-    get_songs, find_specific_band, get_more_songs, insert_song, remove_song, remove_band, insert_record
+    get_songs, find_specific_band, get_more_songs, insert_song, remove_song, remove_band, insert_record, export_db
 from pymysql import InternalError, IntegrityError
 
 
@@ -14,12 +14,18 @@ def title_screen():
         return redirect('/login')  
     return render_template('explore.html')
 
+@app.route('/export')
+def export():
+    if current_user.is_anonymous():
+        return redirect('/login')
+    export_db()
+    return send_from_directory('1980', 'database.sql')
+
 # routes
 @app.route('/exploredb', methods=['post'])
 def explore_db():
     if current_user.is_anonymous():
         return redirect('/login')
-      
     return render_template('explore.html')
 
 # routes
@@ -150,7 +156,10 @@ def remove_band_view(band):
 
 @app.route('/submit', methods=['POST'])
 def submit():
-    insert_band(request.form['band'], request.form['start'], request.form['end'], request.form['genre'])
+    try:
+        insert_band(request.form['band'], request.form['start'], request.form['end'], request.form['genre'])
+    except IntegrityError:
+        return render_template('duplicate.html')
     return render_template('confirm.html', object=request.form['band'])
 
 @app.route('/signup')

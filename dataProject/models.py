@@ -4,6 +4,8 @@ from flask import Flask, flash, redirect, url_for, request, get_flashed_messages
 from flask.ext.login import LoginManager, UserMixin, current_user, login_user
 from dataProject import login_manager
 from pymysql import InternalError, IntegrityError
+import os
+import webbrowser
 
 
 class User(UserMixin):
@@ -72,7 +74,11 @@ def insert_record(band_name, record_title, release):
     return ''
 
 def insert_song(data):
-    length = '00:' + data['length']
+    if data['length'].count(':') == 1:
+        length = '00:' + data['length']
+    else:
+        length = data['length']
+
     if check_for_sql_injection(data['song'], data['record_title'], length, data['release']):
         return "si"
 
@@ -134,15 +140,15 @@ def get_more_songs(data):
     with g.db.cursor() as cursor:
         result = ''
         if band_name:
-            cursor.execute('SELECT * from bands NATURAL JOIN records NATURAL JOIN songs WHERE band_name = %s and (release_date >= %s and release_date <= %s)', ( band_name, start_year, end_year))
+            cursor.execute('SELECT * from allsonginfo WHERE band_name = %s and (release_date >= %s and release_date <= %s)', ( band_name, start_year, end_year))
             result = cursor.fetchall()
 
         elif genre == "All":
-            cursor.execute('SELECT * from bands NATURAL JOIN records NATURAL JOIN songs WHERE release_date >= %s and release_date <= %s', (start_year, end_year))
+            cursor.execute('SELECT * from allsonginfo WHERE release_date >= %s and release_date <= %s', (start_year, end_year))
             result = cursor.fetchall()
 
         else:
-            cursor.execute('SELECT * from bands NATURAL JOIN records NATURAL JOIN songs WHERE genre = %s AND (release_date >= %s and release_date <= %s)', (genre, start_year, end_year))
+            cursor.execute('SELECT * from allsonginfo WHERE genre = %s AND (release_date >= %s and release_date <= %s)', (genre, start_year, end_year))
             result = cursor.fetchall()
     return result
 
@@ -169,3 +175,10 @@ def check_for_sql_injection(*args):
             if "\'" in arg:
                 return True
     return False
+
+def export_db():
+    os.system("mysqldump --host=stardock.cs.virginia.edu --user=cs4750hbm2qc --password=cs47501980 cs4750hbm2qc > database.sql")
+    f = open('database.sql')
+    stuff = f.read()
+    webbrowser.open("/Users/sunnyharris/1980_new/1980/database.sql")
+    import ipdb; ipdb.set_trace()
